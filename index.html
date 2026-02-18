@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildlife Conservation Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c3b2e 0%, #1a5c48 30%, #2d936c 70%, #4bc992 100%);
+            background-attachment: fixed;
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+        
+        .header h1 {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #b8f1d0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.93);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: all 0.3s ease;
+            color: #0c3b2e;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(76, 201, 146, 0.5);
+        }
+        
+        .search-box::placeholder {
+            color: #6b8c7d;
+        }
+        
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-title i {
+            margin-right: 15px;
+            color: #4bc992;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .link-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .link-card:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(76, 201, 146, 0.3);
+        }
+        
+        .link-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            font-size: 1.5rem;
+            color: #4bc992;
+            flex-shrink: 0;
+        }
+        
+        .link-content {
+            flex: 1;
+        }
+        
+        .link-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .link-content p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 40px 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4bc992;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .quote-section {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 50px 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            border-left: 5px solid #4bc992;
+        }
+        
+        .quote-section blockquote {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .quote-section cite {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .footer a {
+            color: #4bc992;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: #b8f1d0;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 1100px) {
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .search-box {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .category-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .link-card {
+                padding: 18px;
+            }
+            
+            .link-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-paw"></i> Wildlife Conservation Portal</h1>
+        <p>Your gateway to wildlife protection organizations, resources, and actionable information. Join the fight to preserve our planet's biodiversity.</p>
+    </div>
+    
+    <div class="search-container">
+        <form action="https://www.google.com/search" method="get" target="_blank">
+            <input class="search-box" type="text" name="q" placeholder="Search for wildlife conservation topics...">
+        </form>
+    </div>
+    
+    <div class="main-container">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-value">1M+</span>
+                <span class="stat-label">Species Threatened</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">68%</span>
+                <span class="stat-label">Wildlife Lost Since 1970</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">150+</span>
+                <span class="stat-label">Countries With Protected Areas</span>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2 class="category-title"><i class="fas fa-globe-americas"></i> Major Conservation Organizations</h2>
+            <div class="links-grid">
+                <div class="link-card" onclick="window.open('https://www.worldwildlife.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>World Wildlife Fund</h3>
+                        <p>Leading organization working to conserve nature and reduce threats to biodiversity.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.iucn.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>IUCN</h3>
+                        <p>International Union for Conservation of Nature - authority on species conservation status.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.conservation.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Conservation International</h3>
+                        <p>Protecting nature for the benefit of people through science, policy, and partnerships.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.wcs.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-dove"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Wildlife Conservation Society</h3>
+                        <p>Saving wildlife and wild places worldwide through science, conservation, and education.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.nature.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>The Nature Conservancy</h3>
+                        <p>Conserving lands and waters on which all life depends through collaborative solutions.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.awf.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-elephant"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>African Wildlife Foundation</h3>
+                        <p>Ensuring wildlife and wild lands thrive in modern Africa through conservation strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2 class="category-title"><i class="fas fa-hands-helping"></i> Get Involved & Donate</h2>
+            <div class="links-grid">
+                <div class="link-card" onclick="window.open('https://www.worldanimalprotection.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>World Animal Protection</h3>
+                        <p>Ending animal cruelty and suffering through advocacy, campaigns, and direct action.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.bornfree.org.uk', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-lion"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Born Free Foundation</h3>
+                        <p>Keeping wildlife in the wild through conservation projects and animal rescue.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.ifaw.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>International Fund for Animal Welfare</h3>
+                        <p>Rescuing and protecting animals around the world from cruelty and exploitation.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.sealegacy.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Sea Legacy</h3>
+                        <p>Marine conservation organization using photography to protect oceans and marine life.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.savetheelephants.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-otter"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Save the Elephants</h3>
+                        <p>Dedicated to securing a future for elephants and the habitats they depend on.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.panthera.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-cat"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Panthera</h3>
+                        <p>Global wild cat conservation organization focused on saving big cats and their ecosystems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2 class="category-title"><i class="fas fa-book-open"></i> Information & Research</h2>
+            <div class="links-grid">
+                <div class="link-card" onclick="window.open('https://www.cites.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>CITES</h3>
+                        <p>Convention on International Trade in Endangered Species of Wild Fauna and Flora.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.iucnredlist.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>IUCN Red List</h3>
+                        <p>The world's most comprehensive inventory of the global conservation status of species.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.birdlife.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-crow"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>BirdLife International</h3>
+                        <p>Global partnership of conservation organizations focusing on bird conservation.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.unep-wcmc.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>UNEP-WCMC</h3>
+                        <p>United Nations Environment Programme World Conservation Monitoring Centre.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.traffic.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>TRAFFIC</h3>
+                        <p>Wildlife trade monitoring network working to ensure trade is not a threat to conservation.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.rewild.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>RE:wild</h3>
+                        <p>Protecting and restoring biodiversity, wilderness areas, and wild animals globally.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quote-section">
+            <blockquote>
+                "Wildlife conservation is not just about saving animals; it's about saving ourselves. The fate of humanity is inextricably linked to the fate of the natural world."
+            </blockquote>
+            <cite>— Dr. Jane Goodall, Primatologist and Conservationist</cite>
+        </div>
+        
+        <div class="category">
+            <h2 class="category-title"><i class="fas fa-tools"></i> Tools & Resources</h2>
+            <div class="links-grid">
+                <div class="link-card" onclick="window.open('https://www.inaturalist.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>iNaturalist</h3>
+                        <p>Community science platform to record and share observations of biodiversity worldwide.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.globalwildlife.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Global Wildlife Conservation</h3>
+                        <p>Protecting biodiversity through scientific research, exploration, and conservation action.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.wwf.org.uk/learn/love-nature/planet-saving-hacks', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Conservation Tips</h3>
+                        <p>Practical ways to help protect wildlife and habitats in your daily life.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.earthsendangered.com', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Earth's Endangered Creatures</h3>
+                        <p>Database of endangered species with information on threats and conservation status.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.wildlifetrusts.org', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Wildlife Trusts</h3>
+                        <p>Network of local conservation organizations protecting wildlife across the UK.</p>
+                    </div>
+                </div>
+                
+                <div class="link-card" onclick="window.open('https://www.conservationcareers.com', '_blank')">
+                    <div class="link-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="link-content">
+                        <h3>Conservation Careers</h3>
+                        <p>Job board and career advice for those wanting to work in wildlife conservation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Wildlife Conservation Portal | Created to support biodiversity protection | 
+        <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a> | 
+        <a href="https://www.un.org/sustainabledevelopment/biodiversity/" target="_blank">UN Sustainable Development Goal 15</a></p>
+        <p style="margin-top: 10px;">"The greatness of a nation and its moral progress can be judged by the way its animals are treated." — Mahatma Gandhi</p>
+    </div>
+
+    <script>
+        // Add interactive animation to stat numbers
+        document.addEventListener('DOMContentLoaded', function() {
+            const statValues = document.querySelectorAll('.stat-value');
+            
+            statValues.forEach(stat => {
+                const finalValue = stat.textContent;
+                stat.textContent = '0';
+                
+                const animateCounter = () => {
+                    const currentValue = parseInt(stat.textContent);
+                    const targetValue = parseInt(finalValue.replace(/\D/g, ''));
+                    
+                    if (currentValue < targetValue) {
+                        const increment = Math.ceil(targetValue / 50);
+                        stat.textContent = Math.min(currentValue + increment, targetValue).toLocaleString() + finalValue.replace(/\d+/g, '');
+                        setTimeout(animateCounter, 30);
+                    } else {
+                        stat.textContent = finalValue;
+                    }
+                };
+                
+                // Trigger animation when element is in viewport
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateCounter();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(stat.parentElement);
+            });
+            
+            // Add hover effect to search box
+            const searchBox = document.querySelector('.search-box');
+            searchBox.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            searchBox.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+            
+            // Add click animation to link cards
+            const linkCards = document.querySelectorAll('.link-card');
+            linkCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-5px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px) scale(1)';
+                    }, 150);
+                });
+            });
+            
+            // Add search functionality for wildlife conservation topics
+            searchBox.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = this.value.trim();
+                    if (query) {
+                        // Redirect to Google search with wildlife conservation context
+                        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query + " wildlife conservation")}`;
+                        window.open(searchUrl, '_blank');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
